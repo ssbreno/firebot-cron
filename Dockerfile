@@ -2,9 +2,9 @@ FROM node:20 AS builder
 
 WORKDIR /src
 COPY package.json yarn.lock /src/
-RUN yarn
+RUN npm install
 COPY . /src
-RUN yarn tsc
+RUN npm run tsc
 
 FROM node:20
 
