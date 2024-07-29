@@ -3,7 +3,7 @@ import { ApiResponse } from '../core/interfaces/guilds.interface';
 
 export class GetGuildsTibiaData {
   async getGuilds(): Promise<ApiResponse> {
-    const url = `${process.env.TIBIA_DATA_API}/v4/guild/Tornabra Encore`;
+    const url = `${process.env.TIBIA_DATA_API}/v4/guild/Unebro`;
 
     try {
       const headers = {

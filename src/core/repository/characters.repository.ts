@@ -1,18 +1,15 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 import db from '../../db';
 import { CharacterType } from '../enums/character.enum';
 import { Character } from '../interfaces/character.interface';
 
 export default class CharacterRepository {
-  private trx: Knex<any, unknown[]> | Knex.Transaction<any, unknown[]>;
+  private trx: Knex;
 
-  constructor(
-    transactionOrKnex:
-      | Knex<any, unknown[]>
-      | Knex.Transaction<any, unknown[]> = db,
-  ) {
+  constructor(transactionOrKnex: Knex = db) {
     this.trx = transactionOrKnex;
   }
+
   public async findAll(characterNames: string[]): Promise<Character[]> {
     return this.trx('character').select('*').whereIn('name', characterNames);
   }

@@ -18,6 +18,8 @@ const characterService = new AddCharacterService(
   getGuildsTibiaData,
 );
 
+characterService.scheduleUpdateCharacters();
+
 cron.schedule('0 0 * * *', async () => {
   logger.info('Starting add characters...');
   await characterService.scheduleUpdateCharacters();
