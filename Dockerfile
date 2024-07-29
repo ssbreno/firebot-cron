@@ -1,27 +1,26 @@
-FROM node:20 AS builder
+ARG NODE_VERSION=18.15.0
+ARG ALPINE_VERSION=3.15
 
-ENV NODE_ENV=build
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
+WORKDIR /src
+COPY package.json yarn.lock /src/
+RUN yarn
+COPY . /src
+RUN yarn tsc
 
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
 WORKDIR /app
+COPY --from=builder /src/dist /app/dist
+COPY package.json yarn.lock /app/
+RUN set -x \
+  && apk --no-cache add tzdata \
+  && ln -snf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
+  && echo America/Sao_Paulo > /etc/timezone \
+	&& cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
+  && echo America/Sao_Paulo > /etc/timezone \
+	&& apk del tzdata \
+  && yarn install --prod \
+  && yarn cache clean
 
-COPY package*.json pnpm-lock.yaml* ./
-
-COPY . ./
-
-RUN npm run build
-
-RUN npm prune --prod
-
-FROM node:20
-
-ENV NODE_ENV=development
-
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-WORKDIR /app
-
-COPY --from=builder /app/package*.json /app/
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/node_modules /app/node_modules
-
-CMD npm run dev
+USER node
+CMD ["node","/app/dist/index.js"]
