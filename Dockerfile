@@ -4,7 +4,7 @@ WORKDIR /src
 COPY package.json yarn.lock /src/
 RUN npm install
 COPY . /src
-RUN npm run tsc
+RUN npm run dev
 
 FROM node:20
 
