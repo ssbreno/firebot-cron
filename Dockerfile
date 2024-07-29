@@ -1,14 +1,13 @@
-ARG NODE_VERSION=18.15.0
-ARG ALPINE_VERSION=3.15
+FROM node:20 AS builder
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 WORKDIR /src
 COPY package.json yarn.lock /src/
 RUN yarn
 COPY . /src
 RUN yarn tsc
 
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION}
+FROM node:20
+
 WORKDIR /app
 COPY --from=builder /src/dist /app/dist
 COPY package.json yarn.lock /app/
