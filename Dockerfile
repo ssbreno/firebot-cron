@@ -5,7 +5,6 @@ COPY package.json yarn.lock /src/
 RUN yarn install
 COPY . /src/
 
-# Assuming your project has a build script that outputs to /src/dist
 RUN yarn build
 
 FROM node:20
