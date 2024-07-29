@@ -4,7 +4,7 @@ import { ApiResponse } from '../core/interfaces/guilds.interface';
 export class GetGuildsTibiaData {
   async getGuilds(): Promise<ApiResponse> {
     const url = `${process.env.TIBIA_DATA_API}/v4/guild/Unebro`;
-
+    console.log(url);
     try {
       const headers = {
         'Content-Type': 'application/json',

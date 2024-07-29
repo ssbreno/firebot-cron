@@ -12,6 +12,7 @@ export default class AddCharacterService {
   public async scheduleUpdateCharacters(): Promise<void> {
     logger.info('Fetching guild data...');
     const apiResponse = await this.getGuildsTibiaData.getGuilds();
+    console.log(apiResponse);
     logger.info('Processing members...');
     const members = apiResponse.guild.members;
 
